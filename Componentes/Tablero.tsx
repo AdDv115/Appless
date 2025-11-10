@@ -1,26 +1,13 @@
-import React from "react";
-import { View,Text, TouchableOpacity,FlatList,TextInput } from "react-native";
-import estilos from "./Estilos/Estilos";
+import React, { useEffect, useState } from "react";
+import { View,Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, FlatList, Platform } from 'react-native';
+import estilos from "./Estilos/Estilos"
 import RenderItem from "./RenderItem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-
-const task=[
-    {
-        title:'Alimentar al brayan',
-        done:false,
-        date:new Date()
-    },
-    {
-        title:'Bañar al brayan',
-        done:true,
-        date:new Date()
-    },
-    {
-        title:'Querer al brayan',
-        done:false,
-        date:new Date()
-    }
+const tasks=[
 ]
+
 export interface Task{
     title:string,
     done:boolean,
@@ -28,32 +15,128 @@ export interface Task{
 }
 
 export default function Tablero(){
-    const markDone = () => {
-    console.log("Tarea marcada como hecha");
-  };
+    const [text,setText]=useState('')
+    const [tasks,setTasks]=useState<Task[]>([])
+    const [date, setDate] = useState(new Date())
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [showTimePicker, setShowTimePicker] = useState(false)
 
-  const deleteFunction = () => {
-    console.log("Tarea eliminada");
-  };
+    const storeData = async (value:Task[]) => {
+        try{
+            await AsyncStorage.setItem('Appless',
+                JSON.stringify(value))
+        }
+        catch(e){}
+    }
+
+    const getData = async () => {
+        try{
+            const value=await AsyncStorage.getItem('Appless')
+            if(value != null){
+                const tasklocal = JSON.parse(value).map((task:Task) => ({...tasks,
+                    date:new Date(task.date)
+             }))
+                
+            }
+        }catch(e){}
+    }
+
+    useEffect(()=>{
+        getData()
+    },[])
+
+    const onDateChange = (event: any, selectedDate ?: Date) => {
+        setShowDatePicker(false)
+        if(event.type === 'set' && selectedDate){
+            setDate(selectedDate)
+            setShowDatePicker(true)
+        }
+    }
+
+    const onTimeChange = (event: any, selectedTime ?: Date) => {
+        setShowTimePicker(false)
+        if(event.type === 'set' && selectedTime){
+            const newDate = new Date(date)
+            newDate.setHours(selectedTime.getHours())
+            newDate.setMinutes(selectedTime.getMinutes())
+            setDate(newDate)
+        }
+    }
+
+    const addTask=()=>{
+      const tmp=[...tasks]
+      const newTasks={
+        title:text,
+        done:false,
+        date:date
+      }
+      tmp.push(newTasks)
+      setTasks(tmp)
+      storeData(tmp)
+      setText('')
+      setDate(new Date())
+    }
+
+    const markDone=(task:Task)=>{
+      const tmp=[...tasks]
+      const index=tmp.findIndex(el=>el.title===task.title)
+      const todo=tmp[index]
+      todo.done=!todo.done
+      setTasks(tmp)
+      storeData(tmp)
+    }
+
+    const deleteFuntion=(task:Task)=>{
+      const tmp=[...tasks]
+      const index=tmp.findIndex(el=>el.title===task.title)
+      tmp.splice(index,1)
+      setTasks(tmp)
+      storeData(tmp)
+    }
+
+    const formatDate = (date:Date) => {
+        return date.toLocaleDateString('es-ES',{
+            day:'2-digit',
+            month:'2-digit',
+            year:'numeric',
+            hour:'2-digit',
+            minute:'2-digit'
+        })
+    }
+
     return(
         <View style={estilos.container}>
-            <Text style={estilos.title}>Hola</Text>
+            <Text style={estilos.title}>
+                Tareas
+            </Text>
             <View style={estilos.inputcontainer}>
-            <TextInput placeholder="Escriba" style={estilos.textinput}></TextInput>
-            <TouchableOpacity style={estilos.boton}>
-                <Text>Agregar</Text>
-            </TouchableOpacity>
+                <TextInput 
+                    placeholder="Escriba" 
+                    style={estilos.textinput}
+                    value={text}
+                    onChangeText={(t:string)=>setText(t)}/>
+
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={estilos.boton}> 
+                            <Text>🗓️</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity  
+                            style={estilos.boton}
+                            onPress={addTask}>
+                            <Text>Agregar</Text>
+                        </TouchableOpacity>
             </View>
-            <View>
+
+             <View>
                 <FlatList
-                    renderItem={({ item }) => (
+                 renderItem={({item})=>
                     <RenderItem
                         item={item}
                         markDone={markDone}
-                        deleteFunction={deleteFunction}
-                    />
-                )}
-                 data={task}
+                        deleteFuntion={deleteFuntion}
+                    />}
+                 data={tasks}
+                 keyExtractor={(item,index) => `${item.title}-${index}`}
                 />
             </View>
         </View>
