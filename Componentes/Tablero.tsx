@@ -94,16 +94,6 @@ export default function Tablero(){
       storeData(tmp)
     }
 
-    const formatDate = (date:Date) => {
-        return date.toLocaleDateString('es-ES',{
-            day:'2-digit',
-            month:'2-digit',
-            year:'numeric',
-            hour:'2-digit',
-            minute:'2-digit'
-        })
-    }
-
     return(
         <View style={estilos.container}>
             <Text style={estilos.title}>
@@ -116,6 +106,7 @@ export default function Tablero(){
                     value={text}
                     onChangeText={(t:string)=>setText(t)}/>
 
+                    <View style={estilos.ContBoton}>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)} style={estilos.boton}> 
                             <Text>🗓️</Text>
                         </TouchableOpacity>
@@ -125,7 +116,27 @@ export default function Tablero(){
                             onPress={addTask}>
                             <Text>Agregar</Text>
                         </TouchableOpacity>
+                    </View>
             </View>
+
+            {showDatePicker && (
+                <DateTimePicker
+                    value={date}
+                    mode="date"
+                    display="default"
+                    onChange={onDateChange}
+                    minimumDate={new Date()}
+                />
+            )}
+
+            {showTimePicker && (
+                <DateTimePicker
+                    value={date}
+                    mode="time"
+                    display="default"
+                    onChange={onTimeChange}
+                />
+            )}
 
              <View>
                 <FlatList
