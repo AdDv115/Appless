@@ -3,10 +3,8 @@
  */
 
 import { AppRegistry } from 'react-native';
-// import App from './App';
-// import Tablero from './Componentes/Tablero';
-import Inicio from './Componentes/cLogin';
+
+import App from './Componentes/App';
 import { name as appName } from './app.json';
 
-// AppRegistry.registerComponent(appName, () => App);
- AppRegistry.registerComponent(appName, () => Inicio);
+AppRegistry.registerComponent(appName, () => App);

@@ -1,4 +1,4 @@
-import estilos from "./Estilos/Estilos";
+import estilos from "../Componentes/Estilos/Estilos";
 import { View,
         Text,
         TouchableOpacity} from 'react-native';

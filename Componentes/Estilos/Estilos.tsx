@@ -9,11 +9,10 @@ const estilos = StyleSheet.create({
   },
 
   container: {
-    backgroundColor: 'white',
     padding: 20,
+    backgroundColor:'white',
     borderRadius: 15,
     width: '90%',
-    alignItems: 'center',
     elevation: 5, 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.10,
@@ -25,14 +24,16 @@ const estilos = StyleSheet.create({
     fontSize: 20,
     color: '#000000ff',
     marginBottom: 15,
-    fontWeight:'bold'
+    fontWeight:'bold',
+    textAlign:'center'
   },
 
   text: {
     fontSize: 16,
     color: '#6f6f6f',
     marginVertical: 5,
-    fontWeight:'bold'
+    fontWeight:'bold',
+    textAlign:'left'
   },
 
   textinput: {
@@ -40,8 +41,9 @@ const estilos = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderRadius: 15,
-    width: '90%',
+    width: '100%',
     marginVertical: 5,
+    alignItems:'center'
   },
 
   inputcontainer: {
@@ -56,7 +58,7 @@ const estilos = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    width: '95%',
+    width: '100%',
     paddingVertical: 10,
     marginTop: 15,
     
@@ -104,6 +106,7 @@ const estilos = StyleSheet.create({
     borderRadius: 15,
     width: '55%'
   },
+  
 });
 
 export default estilos;

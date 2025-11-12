@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View,Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, FlatList, Platform } from 'react-native';
 import estilos from "./Estilos/Estilos"
-import RenderItem from "./RenderItem";
+import RenderItem from "../Page/RenderItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
