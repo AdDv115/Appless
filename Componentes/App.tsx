@@ -1,5 +1,5 @@
 import React from "react";
-import Inicio from "./cLogin";
+import Inicio from "./cRegistro";
 import Tablero from "./Tablero";
 import Registro from "./cRegistro";
 import AsyncStorage from "@react-native-async-storage/async-storage";
