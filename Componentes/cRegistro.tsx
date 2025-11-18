@@ -30,6 +30,12 @@ const Registrar = async () => {
     const mensaje = await response.text();
     Alert.alert(mensaje);
 
+    setUsuario('');
+    setCorreo('');
+    setTelefono('');
+    setContra('');
+    setMiembro('');
+
   } catch (error) {
 
     console.error(error);
