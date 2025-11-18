@@ -13,7 +13,7 @@ const [miembro, setMiembro] = useState('')
 
 const Registrar = async () => {
   try {
-    const response = await fetch('http://192.168.137.1:3000/crear', {
+    const response = await fetch('https://apiapp-addv115s-projects.vercel.app/crear', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
